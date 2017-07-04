@@ -21,6 +21,10 @@ public:
   void setPort(int port);
   void launchCrypt();
   string hache(string ss);
+
+  byte stringToByte(string ss);
+  string byteToString(byte ss);
+
   //int receive();
   //int send();
 
@@ -36,7 +40,7 @@ private:
 
   string *pKey;
   SecByteBlock *key;
-  byte *iv;
+  SecByteBlock *iv;
 
 
 };

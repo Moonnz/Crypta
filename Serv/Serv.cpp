@@ -108,3 +108,18 @@ int main()
   Serv a(50000);
   return 0;
 }
+
+byte Serv::stringToByte(string ss){
+  byte a[sizeof(ss)];
+  for(int i=0; i<sizeof(ss); i++)
+    a[i] == ss[i];
+  return a;
+}
+
+string Serv::byteToString(byte ss){
+  string a;
+  a.resize(sizeof(ss))
+  for(int i=0; i<sizeof(ss); i++)
+    a[i] == ss[i];
+  return a;
+}

@@ -53,11 +53,11 @@ void Client::launchCrypt()
   Val.clear();
   pack->clear();
   //Generation de la cles AES
-  key = new SecByteBlock(0x00, AES::MAX_KEYLENGTH);
+  key = new SecByteBlock(AES::MAX_KEYLENGTH);
   rnd.GenerateBlock( key, key.size() );
   //Generation d'un vecteur d'initialisation
-  iv = new iv[AES::BLOCKSIZE];
-  rnd.GenerateBlock(iv, AES::BLOCKSIZE);
+  iv = new SecByteBlock(AES::BLOCKSIZE);
+  rnd.GenerateBlock( iv, AES::BLOCKSIZE );
 
   *pack << key << iv;
 
