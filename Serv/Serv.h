@@ -7,7 +7,6 @@
 #include <integer.h>
 #include <sha.h>
 #include <hex.h>
-#include <filters.h>
 
 using namespace std;
 using namespace sf;
@@ -39,6 +38,4 @@ private:
   string *pKey;
   SecByteBlock *key;
   byte *iv;
-
-
 };

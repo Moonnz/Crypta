@@ -67,20 +67,23 @@ void Serv::launchCrypt()
   *pack >> Val;
   pack->clear();
   //Verification que la cles a était correctement recu
-  if(Val == hache(Public))
+  if(Val == hache(Public)){
     cout << "Clé correctement echanger" << endl;
+  }
   //Je nettoye la string Val
   Val.clear();
+  //Creation des varaibles qui recevront la cles AES et l'IV
+  key = new SecByteBlock(0x00, AES::MAX_KEYLENGTH);
+  iv = new iv[AES::BLOCKSIZE];
+  //Je recois la cles AES crypter en RSA generer par le Client
+  socket->receive(*pack);
+  //Je met la cles AES crypter dans la variable Val
+  *pack >> key >> iv;
 
   //Initialisation d'un decryptor RSAA pour recuperer la cles AES
   RSAES_OAEP_SHA_Decryptor d(*privateKey);
   //Decryptage de la cles
   StringSource s(Val, true, new PK_DecryptorFilter(rng, d, new StringSink(*pKey)));
-
-  key = new SecByteBlock(0x00, AES::MAX_KEYLENGTH);
-  rnd.GenerateBlock( key, key.size() );
-  iv = new iv[AES::BLOCKSIZE];
-  rnd.GenerateBlock(iv, AES::BLOCKSIZE);
 
   pack->clear();
 
