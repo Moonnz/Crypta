@@ -86,7 +86,6 @@ void Serv::launchCrypt()
   //Decryptage de la cles
   StringSource s( keyS, true, new PK_DecryptorFilter( rng, d, new StringSink( keyS ) ) );
   StringSource ss( keyS, true, new PK_DecryptorFilter( rng, d ,new StringSink( keyS ) ) );
-  //TEST GIT
   pack->clear();
 
 }
