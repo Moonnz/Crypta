@@ -85,8 +85,12 @@ void Serv::launchCrypt()
   RSAES_OAEP_SHA_Decryptor d(*privateKey);
   //Decryptage de la cles
   StringSource s( keyS, true, new PK_DecryptorFilter( rng, d, new StringSink( keyS ) ) );
-  StringSource ss( keyS, true, new PK_DecryptorFilter( rng, d ,new StringSink( keyS ) ) );
+  StringSource ss( ivS, true, new PK_DecryptorFilter( rng, d ,new StringSink( ivS ) ) );
+
   pack->clear();
+
+  key = stringToByte(keyS);
+  iv = stringToByte(ivS);
 
 }
 
