@@ -76,6 +76,9 @@ void Client::launchCrypt()
   //J'envois le paquet
   socket->send(*pack);
 
+  cout << key << endl;
+  cout << iv << endl;
+
 
 }
 string Client::hache(string ss){

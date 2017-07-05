@@ -92,6 +92,9 @@ void Serv::launchCrypt()
   *key = stringToByte(keyS);
   *iv = stringToByte(ivS);
 
+  cout << key << endl;
+  cout << iv << endl;
+
 }
 
 string Serv::hache(string ss)
