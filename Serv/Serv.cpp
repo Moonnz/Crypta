@@ -18,6 +18,7 @@ Serv::Serv(int port)
     std::cout << "En attente de connexion..." << std::endl;
     listener->accept(*socket);
     std::cout << "Une connexion rentrante : " << socket->getRemoteAddress() << std::endl;
+    launchCrypt();
   }
 }
 
@@ -54,6 +55,7 @@ void Serv::launchCrypt()
 
   //Encodage de la cles public dans une string en passant par un filtre
   StringSink publicSink(Public);
+  cout << "DEJA LA " << endl;
   publicKey->DEREncode(publicSink);
   //Insertion de la Cles public encoder dans un sf::packet
   *pack << Public;
@@ -130,4 +132,8 @@ string Serv::byteToString(byte *ss, int size){
   for(int i = 0; i < size; i++)
     a[i] = ss[i];
   return a;
+}
+
+void Serv::pr(string ss){
+  cout << ss << endl;
 }

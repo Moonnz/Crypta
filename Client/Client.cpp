@@ -12,11 +12,12 @@ Client::Client(string ip, int port)
 
   if(status == Socket::Done){
     cout << "Client connected" << endl;
+    cout << "launchCrypt" << endl;
+    launchCrypt();
   }
   else{
     cout << "Client connection fail" << endl;
   }
-
 }
 
 
@@ -42,6 +43,7 @@ void Client::launchCrypt()
   //Creation d'un filtre pour la cle
   StringSink publicSink(Val);
   //Decodage de la cles
+  cout << "DEJA LA " << endl;
   publicKey->BERDecode(publicSink);
   //Je calcul et hash la cles recu dans une variable
   hash = hache(Val);
@@ -107,6 +109,10 @@ string Client::byteToString(byte *ss, int size){
   for(int i = 0; i < size; i++)
     a[i] = ss[i];
   return a;
+}
+
+void Client::pr(string ss){
+  cout << ss << endl;
 }
 
 int main(){

@@ -24,6 +24,7 @@ public:
 
   byte stringToByte(string ss);
   string byteToString(byte *ss, int size);
+  void pr(string ss);
 
   //int receive();
   //int send();

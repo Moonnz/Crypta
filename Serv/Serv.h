@@ -20,9 +20,11 @@ public:
   void setPort(int port);
   void launchCrypt();
   string hache(string ss);
-  
+
   byte stringToByte(string ss);
   string byteToString(byte *ss, int size);
+  void pr(string ss);
+
   //int receive();
   //int send();
 
