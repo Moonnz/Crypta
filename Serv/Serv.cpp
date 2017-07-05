@@ -78,7 +78,7 @@ void Serv::launchCrypt()
   //Je recois la cles AES crypter en RSA generer par le Client
   socket->receive(*pack);
   //Je met la cles AES crypter dans la variable Val
-  *pack >> key >> iv;
+  //*pack >> key >> iv;
 
   //Initialisation d'un decryptor RSAA pour recuperer la cles AES
   RSAES_OAEP_SHA_Decryptor d(*privateKey);
@@ -110,16 +110,16 @@ int main()
 }
 
 byte Serv::stringToByte(string ss){
-  byte a[ss.length()];
+  byte* a = new byte[ss.length()];
   for(int i = 0; i < ss.length(); i++)
     a[i] == ss[i];
-  return a;
+  return *a;
 }
 
-string Serv::byteToString(byte ss, int size){
+string Serv::byteToString(byte *ss, int size){
   string a;
-  a.resize(size)
+  a.resize(size);
   for(int i = 0; i < size; i++)
-    a[i] == ss[i];
+    a[i] = ss[i];
   return a;
 }

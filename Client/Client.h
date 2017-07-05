@@ -23,7 +23,7 @@ public:
   string hache(string ss);
 
   byte stringToByte(string ss);
-  string byteToString(byte ss, int size);
+  string byteToString(byte *ss, int size);
 
   //int receive();
   //int send();

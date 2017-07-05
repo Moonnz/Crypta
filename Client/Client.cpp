@@ -34,32 +34,32 @@ void Client::launchCrypt()
   publicKey = new RSA::PublicKey;
 
   //Reception de la cles public RSA
-  socket->receive(pack);
+  socket->receive(*pack);
   //Je place la cles recu dans un string
   *pack >> Val;
   //Je nettoye le sf::packet
-  pack.clear();
+  pack->clear();
   //Creation d'un filtre pour la cle
   StringSink publicSink(Val);
   //Decodage de la cles
-  publicKey->DerDecode(publicSink);
+  publicKey->BERDecode(publicSink);
   //Je calcul et hash la cles recu dans une variable
   hash = hache(Val);
   //Je place le hash dans un sf::packet
   *pack << hash;
   //J'envoyer ce packet
-  socket->send(pack);
+  socket->send(*pack);
   //Je nettoye la variable et le packet
   Val.clear();
   pack->clear();
   //Generation de la cles AES
   key = new byte[AES::MAX_KEYLENGTH];
-  rnd.GenerateBlock( key, key.size() );
+  rng.GenerateBlock( key, AES::MAX_KEYLENGTH );
   //Generation d'un vecteur d'initialisation
   iv = new byte[AES::BLOCKSIZE];
-  rnd.GenerateBlock( iv, AES::BLOCKSIZE );
+  rng.GenerateBlock( iv, AES::BLOCKSIZE );
 
-  *pack << key << iv;
+  //*pack << key << iv;
 
 }
 string Client::hache(string ss){
@@ -75,18 +75,18 @@ string Client::hache(string ss){
   return output;
 }
 
-byte Serv::stringToByte(string ss){
-  byte a[ss.length()];
+byte Client::stringToByte(string ss){
+  byte* a = new byte[ss.length()];
   for(int i = 0; i < ss.length(); i++)
     a[i] == ss[i];
-  return a;
+  return *a;
 }
 
-string Serv::byteToString(byte ss, int size){
+string Client::byteToString(byte *ss, int size){
   string a;
-  a.resize(size)
+  a.resize(size);
   for(int i = 0; i < size; i++)
-    a[i] == ss[i];
+    a[i] = ss[i];
   return a;
 }
 
