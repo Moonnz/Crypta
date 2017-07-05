@@ -77,14 +77,15 @@ void Serv::launchCrypt()
   iv = new byte[AES::BLOCKSIZE];
   //Je recois la cles AES crypter en RSA generer par le Client
   socket->receive(*pack);
+  string keyS, ivS;
   //Je met la cles AES crypter dans la variable Val
-  //*pack >> key >> iv;
+  *pack >> keyS >> ivS;
 
   //Initialisation d'un decryptor RSAA pour recuperer la cles AES
   RSAES_OAEP_SHA_Decryptor d(*privateKey);
   //Decryptage de la cles
-  StringSource s(Val, true, new PK_DecryptorFilter(rng, d, new StringSink(*pKey)));
-
+  StringSource s( keyS, true, new PK_DecryptorFilter( rng, d, new StringSink( keyS ) ) );
+  StringSource ss( keyS, true, new PK_DecryptorFilter( rng, d ,new StringSink( keyS ) ) );
   pack->clear();
 
 }

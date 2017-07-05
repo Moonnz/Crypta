@@ -47,7 +47,7 @@ void Client::launchCrypt()
   hash = hache(Val);
   //Je place le hash dans un sf::packet
   *pack << hash;
-  //J'envoyer ce packet
+  //J'envoye ce packet
   socket->send(*pack);
   //Je nettoye la variable et le packet
   Val.clear();
@@ -59,7 +59,23 @@ void Client::launchCrypt()
   iv = new byte[AES::BLOCKSIZE];
   rng.GenerateBlock( iv, AES::BLOCKSIZE );
 
-  //*pack << key << iv;
+  //Creation des variables pour la cles sous forme de string
+  string keyS, ivS;
+  //Conversion des byte array en string
+  keyS = byteToString(key, AES::MAX_KEYLENGTH);
+  ivS = byteToString(iv, AES::BLOCKSIZE);
+  //Cryptage de la cles et de l'iv
+  RSAES_OAEP_SHA_Encryptor e(*publicKey);
+  StringSource ss1( keyS, true, new PK_EncryptorFilter( rng, e, new StringSink( keyS ) ) );
+  StringSource ss2( ivS, true, new PK_EncryptorFilter( rng, e, new StringSink( ivS ) ) );
+
+  //DEBUG
+  cout << keyS << endl << ivS << endl;
+  //Je place les variables dans le packet
+  *pack << keyS << ivS;
+  //J'envois le paquet
+  socket->send(*pack);
+
 
 }
 string Client::hache(string ss){
