@@ -89,8 +89,8 @@ void Serv::launchCrypt()
 
   pack->clear();
 
-  key = stringToByte(keyS);
-  iv = stringToByte(ivS);
+  *key = stringToByte(keyS);
+  *iv = stringToByte(ivS);
 
 }
 
