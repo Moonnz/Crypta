@@ -53,10 +53,10 @@ void Client::launchCrypt()
   Val.clear();
   pack->clear();
   //Generation de la cles AES
-  key = new SecByteBlock(AES::MAX_KEYLENGTH);
+  key = new byte[AES::MAX_KEYLENGTH];
   rnd.GenerateBlock( key, key.size() );
   //Generation d'un vecteur d'initialisation
-  iv = new SecByteBlock(AES::BLOCKSIZE);
+  iv = new byte[AES::BLOCKSIZE];
   rnd.GenerateBlock( iv, AES::BLOCKSIZE );
 
   *pack << key << iv;
@@ -73,6 +73,21 @@ string Client::hache(string ss){
   encoder.MessageEnd();
 
   return output;
+}
+
+byte Serv::stringToByte(string ss){
+  byte a[ss.length()];
+  for(int i = 0; i < ss.length(); i++)
+    a[i] == ss[i];
+  return a;
+}
+
+string Serv::byteToString(byte ss, int size){
+  string a;
+  a.resize(size)
+  for(int i = 0; i < size; i++)
+    a[i] == ss[i];
+  return a;
 }
 
 int main(){

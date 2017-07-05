@@ -73,8 +73,8 @@ void Serv::launchCrypt()
   //Je nettoye la string Val
   Val.clear();
   //Creation des varaibles qui recevront la cles AES et l'IV
-  key = new SecByteBlock(0x00, AES::MAX_KEYLENGTH);
-  iv = new iv[AES::BLOCKSIZE];
+  key = new byte[AES::MAX_KEYLENGTH];
+  iv = new byte[AES::BLOCKSIZE];
   //Je recois la cles AES crypter en RSA generer par le Client
   socket->receive(*pack);
   //Je met la cles AES crypter dans la variable Val
@@ -110,16 +110,16 @@ int main()
 }
 
 byte Serv::stringToByte(string ss){
-  byte a[sizeof(ss)];
-  for(int i=0; i<sizeof(ss); i++)
+  byte a[ss.length()];
+  for(int i = 0; i < ss.length(); i++)
     a[i] == ss[i];
   return a;
 }
 
-string Serv::byteToString(byte ss){
+string Serv::byteToString(byte ss, int size){
   string a;
-  a.resize(sizeof(ss))
-  for(int i=0; i<sizeof(ss); i++)
+  a.resize(size)
+  for(int i = 0; i < size; i++)
     a[i] == ss[i];
   return a;
 }

@@ -20,6 +20,8 @@ public:
   void setPort(int port);
   void launchCrypt();
   string hache(string ss);
+  byte stringToByte(string ss);
+  string byteToString(byte ss, int size);
   //int receive();
   //int send();
 
@@ -36,6 +38,6 @@ private:
   RSA::PublicKey *publicKey;
 
   string *pKey;
-  SecByteBlock *key;
+  byte *key;
   byte *iv;
 };

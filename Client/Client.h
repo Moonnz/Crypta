@@ -23,7 +23,7 @@ public:
   string hache(string ss);
 
   byte stringToByte(string ss);
-  string byteToString(byte ss);
+  string byteToString(byte ss, int size);
 
   //int receive();
   //int send();
@@ -39,8 +39,8 @@ private:
   RSA::PublicKey *publicKey;
 
   string *pKey;
-  SecByteBlock *key;
-  SecByteBlock *iv;
+  byte *key;
+  byte *iv;
 
 
 };
