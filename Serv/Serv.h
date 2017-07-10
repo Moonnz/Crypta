@@ -7,6 +7,9 @@
 #include <integer.h>
 #include <sha.h>
 #include <hex.h>
+#include <queue.h>
+#include <files.h>
+#include <cryptlib.h>
 
 using namespace std;
 using namespace sf;

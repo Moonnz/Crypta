@@ -21,24 +21,32 @@ void EncodePrivateKey(const string&, const RSA::PrivateKey&);
 void Encode(const string&, const BufferedTransformation&);
 int main()
 {
-  /*AutoSeededRandomPool rnd;
+  AutoSeededRandomPool rnd;
 
   try
   {
-    RSA::PrivateKey rsaP;
-    rsaP.GenerateRandomWithKeySize(rnd, 3072);
+    RSA::PrivateKey rsa3;
+    RSA::PrivateKey rsa4;
+    RSA::PrivateKey rsa8;
 
-    RSA::PublicKey rsaPP(rsaP);
+    rsa3.GenerateRandomWithKeySize(rnd, 3072);
+    rsa4.GenerateRandomWithKeySize(rnd, 4096);
+    rsa8.GenerateRandomWithKeySize(rnd, 8192);
 
-    EncodePrivateKey("rsa-private.key", rsaP);
-    EncodePublicKey("rsa-public.key", rsaPP);
+    RSA::PublicKey rsa33(rsa3);
+    RSA::PublicKey rsa44(rsa4);
+    RSA::PublicKey rsa88(rsa8);
+
+    EncodePublicKey("rsa-public-3072.key", rsa33);
+    EncodePublicKey("rsa-public-4096.key", rsa44);
+    EncodePublicKey("rsa-public-8192.key", rsa88);
   }
 
   catch(CryptoPP::Exception& e)
   {
     cerr << e.what() << endl;
     return -1;
-  }*/
+  }
 
   /*sf::Packet pack;
   sf::TcpListener lis;
@@ -46,14 +54,14 @@ int main()
     cout << "error" << endl;
   sf::TcpSocket client;
   if(lis.accept(client) != sf::Socket::Done)
-    cout << "errorr" << endl;
-  char * buffer = new char[396];
+    cout << "errorr" << endl;*/
+  //char * buffer = new char[396];
   std::size_t a;
-  client.receive(buffer, 396, a);
+  //client.receive(buffer, 396, a);
   std::ofstream out("test.aze", std::ofstream::binary);
   out.write(buffer, 396);
   out.close();
-  lis.close();*/
+  lis.close();
   return 0;
 }
 
