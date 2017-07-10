@@ -74,6 +74,8 @@ void Serv::launchCrypt()
   }
   //Je nettoye la string Val
   Val.clear();
+
+  /*
   //Creation des varaibles qui recevront la cles AES et l'IV
   key = new byte[AES::MAX_KEYLENGTH];
   iv = new byte[AES::BLOCKSIZE];
@@ -96,7 +98,7 @@ void Serv::launchCrypt()
 
   cout << key << endl;
   cout << iv << endl;
-
+  */
 }
 
 string Serv::hache(string ss)

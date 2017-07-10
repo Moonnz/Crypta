@@ -61,6 +61,7 @@ void Client::launchCrypt()
   iv = new byte[AES::BLOCKSIZE];
   rng.GenerateBlock( iv, AES::BLOCKSIZE );
 
+  /*
   //Creation des variables pour la cles sous forme de string
   string keyS, ivS;
   //Conversion des byte array en string
@@ -80,7 +81,7 @@ void Client::launchCrypt()
 
   cout << key << endl;
   cout << iv << endl;
-
+  */
 
 }
 string Client::hache(string ss){
