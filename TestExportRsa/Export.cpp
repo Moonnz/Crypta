@@ -40,6 +40,26 @@ int main()
     EncodePublicKey("rsa-public-3072.key", rsa33);
     EncodePublicKey("rsa-public-4096.key", rsa44);
     EncodePublicKey("rsa-public-8192.key", rsa88);
+
+    std::ifstream is3 ("rsa-public-3072", std::ifstream::binary);
+    std::ifstream is4 ("rsa-public-4096", std::ifstream::binary);
+    std::ifstream is8 ("rsa-public-8192", std::ifstream::binary);
+
+    is3.seekg(0, is.end);
+    is4.seekg(0, is.end);
+    is8.seekg(0, is.end);
+
+    int l3 = is3.tellg();
+    int l4 = is4.tellg();
+    int l8 = is8.tellg();
+
+    is3.close();
+    is4.close()
+    is8.close();
+
+    cout << "Cles public de 3072bits : " << l3 << " chars" << endl;
+    cout << "Cles public de 4096bits : " << l4 << " chars" << endl;
+    cout << "Cles public de 8192bits : " << l8 << " chars" << endl;
   }
 
   catch(CryptoPP::Exception& e)
@@ -54,14 +74,15 @@ int main()
     cout << "error" << endl;
   sf::TcpSocket client;
   if(lis.accept(client) != sf::Socket::Done)
-    cout << "errorr" << endl;*/
-  //char * buffer = new char[396];
+    cout << "errorr" << endl;
+  char * buffer = new char[396];
   std::size_t a;
-  //client.receive(buffer, 396, a);
+  client.receive(buffer, 396, a);
   std::ofstream out("test.aze", std::ofstream::binary);
   out.write(buffer, 396);
   out.close();
   lis.close();
+  */
   return 0;
 }
 
