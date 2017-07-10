@@ -29,9 +29,13 @@ int main()
     RSA::PrivateKey rsa4;
     RSA::PrivateKey rsa8;
 
+    cout << "Generation de la cles de 3072 bits ...";
     rsa3.GenerateRandomWithKeySize(rnd, 3072);
+    cout << "Finis" << endl << "Generation de la cles de 4096 bits ...";
     rsa4.GenerateRandomWithKeySize(rnd, 4096);
+    cout << "Finis" << endl << "Generation de la cles de 8192 bits ...";
     rsa8.GenerateRandomWithKeySize(rnd, 8192);
+    cout <<"Finis" << endl;
 
     RSA::PublicKey rsa33(rsa3);
     RSA::PublicKey rsa44(rsa4);
@@ -41,20 +45,20 @@ int main()
     EncodePublicKey("rsa-public-4096.key", rsa44);
     EncodePublicKey("rsa-public-8192.key", rsa88);
 
-    std::ifstream is3 ("rsa-public-3072", std::ifstream::binary);
-    std::ifstream is4 ("rsa-public-4096", std::ifstream::binary);
-    std::ifstream is8 ("rsa-public-8192", std::ifstream::binary);
+    std::ifstream is3 ("rsa-public-3072.key", std::ifstream::binary);
+    std::ifstream is4 ("rsa-public-4096.key", std::ifstream::binary);
+    std::ifstream is8 ("rsa-public-8192.key", std::ifstream::binary);
 
-    is3.seekg(0, is.end);
-    is4.seekg(0, is.end);
-    is8.seekg(0, is.end);
+    is3.seekg(0, is3.end);
+    is4.seekg(0, is4.end);
+    is8.seekg(0, is8.end);
 
     int l3 = is3.tellg();
     int l4 = is4.tellg();
     int l8 = is8.tellg();
 
     is3.close();
-    is4.close()
+    is4.close();
     is8.close();
 
     cout << "Cles public de 3072bits : " << l3 << " chars" << endl;
