@@ -52,7 +52,7 @@ void Serv::launchCrypt()
   InvertibleRSAFunction params;
   string Public, Val;
   pKey = new string();
-  params.GenerateRandomWithKeySize(rng, 2048);
+  params.GenerateRandomWithKeySize(rng, 8192);
   //Generation des cles RSA
   privateKey = new RSA::PrivateKey(params);
   publicKey = new RSA::PublicKey(params);
@@ -96,6 +96,7 @@ void Serv::launchCrypt()
   cout << key << endl;
   cout << iv << endl;
   */
+  listener->close();
 }
 
 string Serv::hache(string ss)
@@ -136,15 +137,16 @@ void Serv::sendKey(){
   std::ifstream is("k.key", std::ifstream::binary);
   is.seekg(0, is.end);
   int size = is.tellg();
+  is.seekg(0, is.beg);
   char * buffer = new char[size];
   is.read(buffer, size);
   sf::Packet *aa = new sf::Packet;
   *aa << size;
   socket->send(*aa);
   delete aa;
-  socket->send(buffer, size);
   is.close();
   std::remove("k.key");
+  socket->send(buffer, size);
   pack->clear();
 }
 void Serv::EncodePublicKey(const string& filename, const RSA::PublicKey& key)

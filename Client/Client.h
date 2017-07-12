@@ -21,7 +21,7 @@ class Client{
 public:
   Client(string ip, int port);
   Client();
-  ~Client(){};
+  ~Client();
   void setPort(int port);
   void launchCrypt();
   string hache(string ss);
@@ -32,6 +32,7 @@ public:
   void DecodePublicKey(const string&, RSA::PublicKey&);
   void Decode(const string&, BufferedTransformation&);
   void receiveKey();
+  bool exist(const string&);
 
   //int receive();
   //int send();
@@ -42,6 +43,7 @@ private:
   string message;
   int portU;
   sf::Packet *pack;
+  Socket::Status *status;
 
   //Partie cryptage
   RSA::PublicKey *publicKey;

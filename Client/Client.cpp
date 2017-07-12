@@ -8,9 +8,10 @@ Client::Client(string ip, int port)
 {
   socket = new TcpSocket;
   pack = new Packet;
-  Socket::Status status = socket->connect(ip, port);
+  status = new Socket::Status;
+  *status = socket->connect(ip, port);
 
-  if(status == Socket::Done){
+  if(*status == Socket::Done){
     cout << "Client connected" << endl;
     cout << "launchCrypt" << endl;
     launchCrypt();
@@ -25,6 +26,16 @@ Client::Client()
 {
   socket = new TcpSocket;
   pack = new Packet;
+}
+
+Client::~Client(){
+  if(exist("kk.key"))
+    std::remove("kk.key");
+}
+
+bool Client::exist(const string &file){
+  ifstream f(file.c_str());
+  return !f.fail();
 }
 
 void Client::launchCrypt()
@@ -133,11 +144,11 @@ void Client::receiveKey(){
   char* buffer = new char[size];
   socket->receive(buffer, size, b);
   pr("La pas d'erreur");
-  std::ofstream out("k.key", std::ifstream::binary);
+  std::ofstream out("kk.key", std::ifstream::binary);
   out.write(buffer, size);
   out.close();
-  DecodePublicKey("k.key", *publicKey);
-
+  DecodePublicKey("kk.key", *publicKey);
+  std::remove("kk.key");
 }
 
 int main(){
