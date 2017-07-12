@@ -1,6 +1,7 @@
 #include <SFML/Network.hpp>
 #include <string.h>
 #include <iostream>
+#include <fstream>
 
 #include <rsa.h>
 #include <osrng.h>
@@ -20,13 +21,16 @@ public:
   Serv(int port);
   Serv();
   ~Serv(){};
-  void setPort(int port);
+  void setPort(int);
   void launchCrypt();
-  string hache(string ss);
+  string hache(string);
 
-  byte stringToByte(string ss);
-  string byteToString(byte *ss, int size);
+  byte stringToByte(string);
+  string byteToString(byte*, int);
   void pr(string ss);
+  void EncodePrivateKey(const string&, const RSA::PublicKey&)
+  void Encode(const string&, BufferedTransformation&);
+
 
   //int receive();
   //int send();

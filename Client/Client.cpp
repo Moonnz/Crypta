@@ -116,6 +116,34 @@ void Client::pr(string ss){
   cout << ss << endl;
 }
 
+void Client::DecodePublicKey(const string& filename, RSA::PublicKey& key)
+{
+  ByteQueue queue;
+
+  Decode(filename, queue);
+  key.BERDecodePublicKey(queue, false, queue.MaxRetrievable());
+}
+
+void Client::Decode(const string& filename, BufferedTransformation& bt)
+{
+  FileSource file(filename.c_str(), true);
+
+  file.TransferTo(bt);
+  bt.MessageEnd();
+}
+
+void Client::receiveKey(){
+  int size;
+  socket.receive(size, sizeof(size));
+  char * buffer = new byte[size];
+  socket.receive(buffer, size);
+  std::ofstream out ("k.key", std::ifstream::binary);
+  out.write(buffer, size);
+  out.close();
+  DecodePublicKey("k.key", *publicKey);
+
+}
+
 int main(){
   Client a("localhost", 50000);
   return 0;

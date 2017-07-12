@@ -54,15 +54,7 @@ void Serv::launchCrypt()
   publicKey = new RSA::PublicKey(params);
 
   //Encodage de la cles public dans une string en passant par un filtre
-  StringSink publicSink(Public);
-  cout << "DEJA LA " << endl;
-  publicKey->DEREncode(publicSink);
-  //Insertion de la Cles public encoder dans un sf::packet
-  *pack << Public;
-  //Envoye du packet
-  socket->send(*pack);
-  //Nettoyage du packet
-  pack->clear();
+  sendKey();
   //Reception du packet dans la variable sf::packet "pack"
   socket->receive(*pack);
   //Je retire le string recu pour le mettre dans la variable Val et je vide le packet
@@ -115,12 +107,6 @@ string Serv::hache(string ss)
   return output;
 }
 
-int main()
-{
-  Serv a(50000);
-  return 0;
-}
-
 byte Serv::stringToByte(string ss){
   byte* a = new byte[ss.length()];
   for(int i = 0; i < ss.length(); i++)
@@ -138,4 +124,39 @@ string Serv::byteToString(byte *ss, int size){
 
 void Serv::pr(string ss){
   cout << ss << endl;
+}
+
+void Serv::sendKey(){
+  EncodePublicKey("k.key", *publicKey)
+  std::ifstream is("k.key", std::ifstream::binary);
+  is.seekg(0, is.end);
+  int size = is.tellg();
+  char * buffer = new char[size];
+  is.read(buffer, size);
+  socket.send(size, sizeof(size));
+  socket.send(buffer, size);
+  is.close();
+  std::remove("k.key");
+  pack->clear();
+}
+void Serv::EncodePublicKey(const string& filename, const RSA::PublicKey& key)
+{
+  ByteQueue queue;
+  key.DEREncodePublicKey(queue);
+
+  Encode(filename, queue);
+}
+
+void Serv::Encode(const string& filename, const BufferedTransformation& bt)
+{
+  FileSink file(filename.c_str());
+
+  bt.CopyTo(file);
+  file.MessageEnd();
+}
+
+int main()
+{
+  Serv a(50000);
+  return 0;
 }

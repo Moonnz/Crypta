@@ -20,7 +20,7 @@ class Client{
 public:
   Client(string ip, int port);
   Client();
-  ~Client(){};
+  ~Client(){socket.close();};
   void setPort(int port);
   void launchCrypt();
   string hache(string ss);
@@ -28,6 +28,8 @@ public:
   byte stringToByte(string ss);
   string byteToString(byte *ss, int size);
   void pr(string ss);
+  void DecodePublicKey(const string&, RSA::PublicKey&);
+  void Decode(const string&, BufferedTransformation&);
 
   //int receive();
   //int send();
