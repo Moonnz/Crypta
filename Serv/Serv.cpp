@@ -4,6 +4,10 @@ using namespace std;
 using namespace sf;
 using namespace CryptoPP;
 
+Serv::~Serv(){
+  listener->close();
+}
+
 Serv::Serv(int port)
 {
   listener = new sf::TcpListener;
@@ -55,8 +59,9 @@ void Serv::launchCrypt()
 
   //Encodage de la cles public dans une string en passant par un filtre
   sendKey();
+  pr("Apparemment pas d'erreur non plus \n Sa reste a voir.");
   //Reception du packet dans la variable sf::packet "pack"
-  socket->receive(*pack);
+  /*socket->receive(*pack);
   //Je retire le string recu pour le mettre dans la variable Val et je vide le packet
   *pack >> Val;
   pack->clear();
@@ -65,7 +70,7 @@ void Serv::launchCrypt()
     cout << "Clé correctement echanger" << endl;
   }
   //Je nettoye la string Val
-  Val.clear();
+  Val.clear();*/
 
   /*
   //Creation des varaibles qui recevront la cles AES et l'IV
@@ -127,14 +132,14 @@ void Serv::pr(string ss){
 }
 
 void Serv::sendKey(){
-  EncodePublicKey("k.key", *publicKey)
+  EncodePublicKey("k.key", *publicKey);
   std::ifstream is("k.key", std::ifstream::binary);
   is.seekg(0, is.end);
   int size = is.tellg();
   char * buffer = new char[size];
   is.read(buffer, size);
   sf::Packet *aa = new sf::Packet;
-  aa << size;
+  *aa << size;
   socket->send(*aa);
   delete aa;
   socket->send(buffer, size);

@@ -1,6 +1,7 @@
 #include <SFML/Network.hpp>
 #include <string.h>
 #include <iostream>
+#include <fstream>
 
 #include <rsa.h>
 #include <osrng.h>

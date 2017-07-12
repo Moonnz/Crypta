@@ -34,26 +34,17 @@ void Client::launchCrypt()
   AutoSeededRandomPool rng;
   publicKey = new RSA::PublicKey;
 
-  //Reception de la cles public RSA
-  socket->receive(*pack);
-  //Je place la cles recu dans un string
-  *pack >> Val;
-  //Je nettoye le sf::packet
-  pack->clear();
-  //Creation d'un filtre pour la cle
-  StringSink publicSink(Val);
-  //Decodage de la cles
-  cout << "DEJA LA " << endl;
-  publicKey->BERDecode(publicSink);
+  receiveKey();
+  pr("Apparemment pas d'erreur \n Sa reste a voir.");
   //Je calcul et hash la cles recu dans une variable
-  hash = hache(Val);
+  /*hash = hache(Val);
   //Je place le hash dans un sf::packet
   *pack << hash;
   //J'envoye ce packet
   socket->send(*pack);
   //Je nettoye la variable et le packet
   Val.clear();
-  pack->clear();
+  pack->clear();*/
   //Generation de la cles AES
   key = new byte[AES::MAX_KEYLENGTH];
   rng.GenerateBlock( key, AES::MAX_KEYLENGTH );
@@ -139,11 +130,11 @@ void Client::receiveKey(){
   socket->receive(*aa);
   *aa >> size;
   delete aa;
-  byte * buffer = new byte[size];
+  char* buffer = new char[size];
   socket->receive(buffer, size, b);
-  std::ofstream out ("k.key", std::ifstream::binary);
-  size_t temp = size;
-  out.write(buffer, temp);
+  pr("La pas d'erreur");
+  std::ofstream out("k.key", std::ifstream::binary);
+  out.write(buffer, size);
   out.close();
   DecodePublicKey("k.key", *publicKey);
 

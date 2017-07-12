@@ -8,6 +8,7 @@
 #include <integer.h>
 #include <sha.h>
 #include <hex.h>
+#include <filters.h>
 #include <queue.h>
 #include <files.h>
 #include <cryptlib.h>
@@ -20,7 +21,7 @@ class Serv{
 public:
   Serv(int port);
   Serv();
-  ~Serv(){};
+  ~Serv();
   void setPort(int);
   void launchCrypt();
   string hache(string);
@@ -28,9 +29,9 @@ public:
   byte stringToByte(string);
   string byteToString(byte*, int);
   void pr(string ss);
-  void EncodePrivateKey(const string&, const RSA::PublicKey&)
-  void Encode(const string&, BufferedTransformation&);
-
+  void EncodePublicKey(const string&, const RSA::PublicKey&);
+  void Encode(const string&, const BufferedTransformation&);
+  void sendKey();
 
   //int receive();
   //int send();

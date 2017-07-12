@@ -1,7 +1,7 @@
 clear
 echo "Compilation du client ..."
-g++ Client/Client.cpp -o ClientC -I/usr/include/SFML -I/usr/include/cryptopp -lsfml-network -lsfml-system -lcryptopp -Wfatal-errors
+g++ Client/Client.cpp -o ClientC -I/usr/include/SFML -I/usr/include/cryptopp -lsfml-network -lsfml-system -lcryptopp
 echo "Compilation terminer"
 echo "Compilation du serveur ..."
-g++ Serv/Serv.cpp -o ServV -I/usr/include/SFML -I/usr/include/cryptopp -lsfml-network -lsfml-system -lcryptopp -Wfatal-errors
+g++ Serv/Serv.cpp -o ServV -I/usr/include/SFML -I/usr/include/cryptopp -lsfml-network -lsfml-system -lcryptopp
 echo "Compilation terminer"
