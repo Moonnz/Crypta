@@ -133,8 +133,11 @@ void Serv::sendKey(){
   int size = is.tellg();
   char * buffer = new char[size];
   is.read(buffer, size);
-  socket.send(size, sizeof(size));
-  socket.send(buffer, size);
+  sf::Packet *aa = new sf::Packet;
+  aa << size;
+  socket->send(*aa);
+  delete aa;
+  socket->send(buffer, size);
   is.close();
   std::remove("k.key");
   pack->clear();

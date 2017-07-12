@@ -134,11 +134,16 @@ void Client::Decode(const string& filename, BufferedTransformation& bt)
 
 void Client::receiveKey(){
   int size;
-  socket.receive(size, sizeof(size));
-  char * buffer = new byte[size];
-  socket.receive(buffer, size);
+  size_t a, b;
+  sf::Packet *aa = new sf::Packet;
+  socket->receive(*aa);
+  *aa >> size;
+  delete aa;
+  byte * buffer = new byte[size];
+  socket->receive(buffer, size, b);
   std::ofstream out ("k.key", std::ifstream::binary);
-  out.write(buffer, size);
+  size_t temp = size;
+  out.write(buffer, temp);
   out.close();
   DecodePublicKey("k.key", *publicKey);
 
