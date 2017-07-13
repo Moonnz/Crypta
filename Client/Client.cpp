@@ -47,15 +47,7 @@ void Client::launchCrypt()
 
   receiveKey();
   pr("Apparemment pas d'erreur \n Sa reste a voir.");
-  //Je calcul et hash la cles recu dans une variable
-  /*hash = hache(Val);
-  //Je place le hash dans un sf::packet
-  *pack << hash;
-  //J'envoye ce packet
-  socket->send(*pack);
-  //Je nettoye la variable et le packet
-  Val.clear();
-  pack->clear();*/
+  RSAES_OAEP_SHA_Encryptor e(*publicKey);
   //Generation de la cles AES
   key = new byte[AES::MAX_KEYLENGTH];
   rng.GenerateBlock( key, AES::MAX_KEYLENGTH );
@@ -152,6 +144,9 @@ void Client::receiveKey(){
 }
 
 int main(){
-  Client a("localhost", 50000);
+  int a;
+  cout << "Indiquer un port : " << endl;
+  cin >> a;
+  Client aa("localhost", a);
   return 0;
 }

@@ -13,7 +13,7 @@ Serv::Serv(int port)
   listener = new sf::TcpListener;
   socket = new sf::TcpSocket;
   pack = new Packet;
-  if(listener->listen(port) != sf::Socket::Done)
+  if(listener->listen(0) != sf::Socket::Done)
     std::cout << "Error listen fail" << std::endl;
   else
   {
@@ -52,7 +52,7 @@ void Serv::launchCrypt()
   InvertibleRSAFunction params;
   string Public, Val;
   pKey = new string();
-  params.GenerateRandomWithKeySize(rng, 8192);
+  params.GenerateRandomWithKeySize(rng, 2048);
   //Generation des cles RSA
   privateKey = new RSA::PrivateKey(params);
   publicKey = new RSA::PublicKey(params);
@@ -60,22 +60,11 @@ void Serv::launchCrypt()
   //Encodage de la cles public dans une string en passant par un filtre
   sendKey();
   pr("Apparemment pas d'erreur non plus \n Sa reste a voir.");
-  //Reception du packet dans la variable sf::packet "pack"
-  /*socket->receive(*pack);
-  //Je retire le string recu pour le mettre dans la variable Val et je vide le packet
-  *pack >> Val;
-  pack->clear();
-  //Verification que la cles a était correctement recu
-  if(Val == hache(Public)){
-    cout << "Clé correctement echanger" << endl;
-  }
-  //Je nettoye la string Val
-  Val.clear();*/
 
-  /*
   //Creation des varaibles qui recevront la cles AES et l'IV
   key = new byte[AES::MAX_KEYLENGTH];
   iv = new byte[AES::BLOCKSIZE];
+  /*
   //Je recois la cles AES crypter en RSA generer par le Client
   socket->receive(*pack);
   string keyS, ivS;
