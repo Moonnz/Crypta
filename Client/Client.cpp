@@ -55,12 +55,18 @@ void Client::launchCrypt()
   iv = new byte[AES::BLOCKSIZE];
   rng.GenerateBlock( iv, AES::BLOCKSIZE );
 
+  byte *keyS = new byte[AES::MAX_KEYLENGTH];
+  byte *ivS = new byte[AES::BLOCKSIZE];
+
+  e.Encrypt( rng, *key, *key->size(), *keyS);
+  e.Encrypt( rng, *iv, *iv->size(), *ivS);
+
+  if( *keyS == *key || *ivS == *iv)
+    cout << "Cryptage fail" << endl;
+  
   /*
   //Creation des variables pour la cles sous forme de string
   string keyS, ivS;
-  //Conversion des byte array en string
-  keyS = byteToString(key, AES::MAX_KEYLENGTH);
-  ivS = byteToString(iv, AES::BLOCKSIZE);
   //Cryptage de la cles et de l'iv
   RSAES_OAEP_SHA_Encryptor e(*publicKey);
   StringSource ss1( keyS, true, new PK_EncryptorFilter( rng, e, new StringSink( keyS ) ) );
