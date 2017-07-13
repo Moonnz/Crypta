@@ -13,7 +13,7 @@ Serv::Serv(int port)
   listener = new sf::TcpListener;
   socket = new sf::TcpSocket;
   pack = new Packet;
-  if(listener->listen(0) != sf::Socket::Done)
+  if(listener->listen(port) != sf::Socket::Done)
     std::cout << "Error listen fail" << std::endl;
   else
   {
@@ -30,6 +30,18 @@ Serv::Serv()
 {
   listener = new sf::TcpListener;
   socket = new sf::TcpSocket;
+  pack = new Packet;
+  if(listener->listen(0) != sf::Socket::Done)
+    std::cout << "Error listen fail" << std::endl;
+  else
+  {
+    std::cout << "Serveur lancer sur le port :" << listener->getLocalPort() << std::endl;
+    portU = listener->getLocalPort();
+    std::cout << "En attente de connexion..." << std::endl;
+    listener->accept(*socket);
+    std::cout << "Une connexion rentrante : " << socket->getRemoteAddress() << std::endl;
+    launchCrypt();
+  }
 }
 
 void Serv::setPort(int port)
