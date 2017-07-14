@@ -55,15 +55,20 @@ void Client::launchCrypt()
   iv = new byte[AES::BLOCKSIZE];
   rng.GenerateBlock( iv, AES::BLOCKSIZE );
 
-  byte *keyS = new byte[AES::MAX_KEYLENGTH];
-  byte *ivS = new byte[AES::BLOCKSIZE];
+  pr("Test Cryptage clé");
+  size_t cipherTextSize = e.CiphertextLength( sizeof(key) );
+  assert(0 != cipherTextSize);
+  byte keyS[cipherTextSize];
 
-  e.Encrypt( rng, *key, *key->size(), *keyS);
-  e.Encrypt( rng, *iv, *iv->size(), *ivS);
+  e.Encrypt(rng, (byte*)key, AES::MAX_KEYLENGTH, (byte*)keyS);
+  cout << sizeof(keyS) << endl << sizeof(key) << endl;
+  *pack << sizeof(keyS);
+  socket->send(*pack);
+  *pack->clear();
+  *pack->append(*keyS, sizeof(keyS));
+  socket->send(*pack);
+  *pack->clear();
 
-  if( *keyS == *key || *ivS == *iv)
-    cout << "Cryptage fail" << endl;
-  
   /*
   //Creation des variables pour la cles sous forme de string
   string keyS, ivS;

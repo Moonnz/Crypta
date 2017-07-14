@@ -64,7 +64,7 @@ void Serv::launchCrypt()
   InvertibleRSAFunction params;
   string Public, Val;
   pKey = new string();
-  params.GenerateRandomWithKeySize(rng, 2048);
+  params.GenerateRandomWithKeySize(rng, 4096);
   //Generation des cles RSA
   privateKey = new RSA::PrivateKey(params);
   publicKey = new RSA::PublicKey(params);
@@ -73,16 +73,23 @@ void Serv::launchCrypt()
   sendKey();
   pr("Apparemment pas d'erreur non plus \n Sa reste a voir.");
 
-  //Creation des varaibles qui recevront la cles AES et l'IV
-  key = new byte[AES::MAX_KEYLENGTH];
-  iv = new byte[AES::BLOCKSIZE];
-  /*
-  //Je recois la cles AES crypter en RSA generer par le Client
   socket->receive(*pack);
-  string keyS, ivS;
-  //Je met la cles AES crypter dans la variable Val
-  *pack >> keyS >> ivS;
+  size_t ivSize, keySize;
+  *pack >> a;
+  *pack >> b;
 
+  *pack->clear();
+
+  //Creation des varaibles qui recevront la cles AES et l'IV
+  keyS = new byte[keySize];
+  ivS = new byte[ivSize];
+
+  socket->receive(*pack);
+  memcpy(*pack->getData(), *pack->getDataSize(), *keyS);
+
+
+
+  /*
   //Initialisation d'un decryptor RSAA pour recuperer la cles AES
   RSAES_OAEP_SHA_Decryptor d(*privateKey);
   //Decryptage de la cles
@@ -168,6 +175,6 @@ void Serv::Encode(const string& filename, const BufferedTransformation& bt)
 
 int main()
 {
-  Serv a(50000);
+  Serv a(0);
   return 0;
 }

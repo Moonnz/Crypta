@@ -12,6 +12,7 @@
 #include <queue.h>
 #include <files.h>
 #include <cryptlib.h>
+#include <assert.h>
 
 using namespace std;
 using namespace sf;
