@@ -56,18 +56,29 @@ void Client::launchCrypt()
   rng.GenerateBlock( iv, AES::BLOCKSIZE );
 
   pr("Test Cryptage clé");
+
   size_t cipherTextSize = e.CiphertextLength( sizeof(key) );
   assert(0 != cipherTextSize);
   byte keyS[cipherTextSize];
 
+  cipherTextSize = e.CiphertextLength( sizeof(iv) );
+  assert(0 != cipherTextSize);
+  byte ivS[cipherTextSize];
+
   e.Encrypt(rng, (byte*)key, AES::MAX_KEYLENGTH, (byte*)keyS);
-  cout << sizeof(keyS) << endl << sizeof(key) << endl;
-  *pack << sizeof(keyS);
+  e.Encrypt(rng, (byte*)iv, AES::BLOCKSIZE, (byte*)ivS);
+
+  *pack << (int)sizeof(keyS);
+  *pack << (int)sizeof(ivS);
+
   socket->send(*pack);
-  *pack->clear();
-  *pack->append(*keyS, sizeof(keyS));
+  pack->clear();
+
+  pack->append(keyS, sizeof(keyS));
   socket->send(*pack);
-  *pack->clear();
+  pack->clear();
+  pack->append(ivS, sizeof(ivS));
+  pack->clear();
 
   /*
   //Creation des variables pour la cles sous forme de string

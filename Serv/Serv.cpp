@@ -74,18 +74,25 @@ void Serv::launchCrypt()
   pr("Apparemment pas d'erreur non plus \n Sa reste a voir.");
 
   socket->receive(*pack);
-  size_t ivSize, keySize;
-  *pack >> a;
-  *pack >> b;
+  int ivSize, keySize;
+  *pack >> ivSize;
+  *pack >> keySize;
 
-  *pack->clear();
+  pack->clear();
 
   //Creation des varaibles qui recevront la cles AES et l'IV
-  keyS = new byte[keySize];
-  ivS = new byte[ivSize];
+  byte keyS[keySize];
+  byte ivS[ivSize];
 
+  pr("Reception clés...");
   socket->receive(*pack);
-  memcpy(*pack->getData(), *pack->getDataSize(), *keyS);
+  memcpy(keyS, pack->getData(), pack->getDataSize());
+  pack->clear();
+
+  pr("Reception iv...");
+  socket->receive(*pack);
+  memcpy(ivS, pack->getData(), pack->getDataSize());
+  pack->clear();
 
 
 
