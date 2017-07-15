@@ -97,12 +97,18 @@ void Serv::launchCrypt()
   //Initialisation d'un decryptor RSAA pour recuperer la cles AES
   RSAES_OAEP_SHA_Decryptor d(*privateKey);
   //Decryptage de la cles
-  size_t sizeR = d.MaxPlaintextLength( keyS );
+  size_t sizeR = d.MaxPlaintextLength( sizeof(keyS) );
   key = new byte[sizeR];
-  d.Decrypt( rng, keyS, sizeof(keyS), key )
-  sizeR = d.MaxPlaintextLength( ivS );
+  pr("Decryptage clé...");
+  d.Decrypt( rng, (byte*)keyS, sizeof(keyS), (byte*)key );
+  sizeR = d.MaxPlaintextLength( sizeof(ivS) );
   iv = new byte[sizeR];
-  d.Decrypt( rng, ivS, sizeof(ivS), iv );
+  pr("Decryptage iv...");
+  d.Decrypt( rng, (byte*)ivS, sizeof(ivS), (byte*)iv );
+  
+
+
+
   listener->close();
 }
 

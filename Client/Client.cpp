@@ -78,6 +78,7 @@ void Client::launchCrypt()
   socket->send(*pack);
   pack->clear();
   pack->append(ivS, sizeof(ivS));
+  socket->send(*pack);
   pack->clear();
 
   /*
