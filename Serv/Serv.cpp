@@ -94,23 +94,15 @@ void Serv::launchCrypt()
   memcpy(ivS, pack->getData(), pack->getDataSize());
   pack->clear();
 
-
-
-  /*
   //Initialisation d'un decryptor RSAA pour recuperer la cles AES
   RSAES_OAEP_SHA_Decryptor d(*privateKey);
   //Decryptage de la cles
-  StringSource s( keyS, true, new PK_DecryptorFilter( rng, d, new StringSink( keyS ) ) );
-  StringSource ss( ivS, true, new PK_DecryptorFilter( rng, d ,new StringSink( ivS ) ) );
-
-  pack->clear();
-
-  *key = stringToByte(keyS);
-  *iv = stringToByte(ivS);
-
-  cout << key << endl;
-  cout << iv << endl;
-  */
+  size_t sizeR = d.MaxPlaintextLength( keyS );
+  key = new byte[sizeR];
+  d.Decrypt( rng, keyS, sizeof(keyS), key )
+  sizeR = d.MaxPlaintextLength( ivS );
+  iv = new byte[sizeR];
+  d.Decrypt( rng, ivS, sizeof(ivS), iv );
   listener->close();
 }
 
