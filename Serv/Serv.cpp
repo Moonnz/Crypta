@@ -121,6 +121,16 @@ void Serv::launchCrypt()
   listener->close();
 }
 
+void Serv::test(string a){
+  char p[a.length()];
+  strcpy(p, a.c_str());
+  CFB_Mode<AES>::Encryption Enc(key, AES::MAX_KEYLENGTH, iv);
+  Enc.ProcessData((byte*)p, (byte*)p, a.length());
+  cout << "String chiffre : \"" << p << "\"" << endl;
+  CFB_Mode<AES>::Decryption Dec(key, AES::MAX_KEYLENGTH, iv);
+  Dec.ProcessData((byte*)p, (byte*)p, a.length());
+}
+
 string Serv::hache(string ss)
 {
   byte digest[SHA::DIGESTSIZE];
