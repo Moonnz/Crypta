@@ -105,7 +105,16 @@ void Serv::launchCrypt()
   iv = new byte[sizeR];
   pr("Decryptage iv...");
   d.Decrypt( rng, (byte*)ivS, sizeof(ivS), (byte*)iv );
-  
+
+  string ssa = "Hello world!";
+  char plainText[ssa.length()];
+  strcpy(plainText, ssa.c_str());
+  cout << plainText << endl;
+  CFB_Mode<AES>::Encryption Enc(key, AES::MAX_KEYLENGTH, iv);
+  Enc.ProcessData((byte*)plainText, (byte*)plainText, ssa.length());
+  cout << ssa << endl;
+  cout << plainText << endl;
+  CFB_Mode<AES>::Decryption Dec(key, AES::MAX_KEYLENGTH, iv);
 
 
 

@@ -13,6 +13,8 @@
 #include <files.h>
 #include <cryptlib.h>
 #include <assert.h>
+#include <modes.h>
+#include <aes.h>
 
 using namespace std;
 using namespace sf;

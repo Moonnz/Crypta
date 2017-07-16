@@ -12,6 +12,8 @@
 #include <queue.h>
 #include <files.h>
 #include <cryptlib.h>
+#include <modes.h>
+#include <aes.h>
 
 using namespace std;
 using namespace sf;
