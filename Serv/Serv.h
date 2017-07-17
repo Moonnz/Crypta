@@ -34,7 +34,7 @@ public:
   void EncodePublicKey(const string&, const RSA::PublicKey&);
   void Encode(const string&, const BufferedTransformation&);
   void sendKey();
-  void test(string);
+  string chiffre(string);
 
   //int receive();
   //int send();
