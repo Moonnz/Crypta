@@ -8,6 +8,7 @@ Client::Client(string ip, int port)
 {
   socket = new TcpSocket;
   pack = new Packet;
+  selector = new sf::SocketSelector;
   status = new Socket::Status;
   *status = socket->connect(ip, port);
 
@@ -15,12 +16,36 @@ Client::Client(string ip, int port)
     cout << "Client connected" << endl;
     cout << "launchCrypt" << endl;
     launchCrypt();
+    string toSend;
+    while(1){
+      cout << "Entrez un message a envoyer : " << endl;
+      cin >> toSend;
+      string toSendS = chiffre(toSend);
+      *pack.clear();
+      *pack << toSendS;
+      socket.send(*pack);
+    }
   }
   else{
     cout << "Client connection fail" << endl;
   }
 }
 
+string Serv::chiffre(string a){
+  char p[a.length()];
+  strcpy(p, a.c_str());
+  CFB_Mode<AES>::Encryption Enc(key, AES::MAX_KEYLENGTH, iv);
+  Enc.ProcessData((byte*)p, (byte*)p, a.length());
+  return string(p);
+}
+
+string Serv::dechiffre(string a){
+  char p[a.length()];
+  strcpy(p, a.c_str());
+  CFB_Mode<AES>::Decryption Dec(key, AES::MAX_KEYLENGTH, iv);
+  Dec.ProcessData((byte*)p, (byte*)p, a.length());
+  return string(p);
+}
 
 Client::Client()
 {
@@ -81,25 +106,6 @@ void Client::launchCrypt()
   socket->send(*pack);
   pack->clear();
 
-  /*
-  //Creation des variables pour la cles sous forme de string
-  string keyS, ivS;
-  //Cryptage de la cles et de l'iv
-  RSAES_OAEP_SHA_Encryptor e(*publicKey);
-  StringSource ss1( keyS, true, new PK_EncryptorFilter( rng, e, new StringSink( keyS ) ) );
-  StringSource ss2( ivS, true, new PK_EncryptorFilter( rng, e, new StringSink( ivS ) ) );
-
-  //DEBUG
-  cout << keyS << endl << ivS << endl;
-  //Je place les variables dans le packet
-  *pack << keyS << ivS;
-  //J'envois le paquet
-  socket->send(*pack);
-
-  cout << key << endl;
-  cout << iv << endl;
-  */
-
 }
 string Client::hache(string ss){
   byte digest[SHA::DIGESTSIZE];
@@ -112,21 +118,6 @@ string Client::hache(string ss){
   encoder.MessageEnd();
 
   return output;
-}
-
-byte Client::stringToByte(string ss){
-  byte* a = new byte[ss.length()];
-  for(int i = 0; i < ss.length(); i++)
-    a[i] == ss[i];
-  return *a;
-}
-
-string Client::byteToString(byte *ss, int size){
-  string a;
-  a.resize(size);
-  for(int i = 0; i < size; i++)
-    a[i] = ss[i];
-  return a;
 }
 
 void Client::pr(string ss){

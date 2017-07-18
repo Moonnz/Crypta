@@ -12,6 +12,7 @@ Serv::Serv(int port)
 {
   listener = new sf::TcpListener;
   socket = new sf::TcpSocket;
+  selector = new sf::SocketSelector;
   pack = new Packet;
   if(listener->listen(port) != sf::Socket::Done)
     std::cout << "Error listen fail" << std::endl;
@@ -30,6 +31,7 @@ Serv::Serv()
 {
   listener = new sf::TcpListener;
   socket = new sf::TcpSocket;
+  selector = new sf::SocketSelector;
   pack = new Packet;
   if(listener->listen(0) != sf::Socket::Done)
     std::cout << "Error listen fail" << std::endl;
@@ -39,9 +41,22 @@ Serv::Serv()
     portU = listener->getLocalPort();
     std::cout << "En attente de connexion..." << std::endl;
     listener->accept(*socket);
+    selector.add(*socket);
     std::cout << "Une connexion rentrante : " << socket->getRemoteAddress() << std::endl;
     launchCrypt();
+    while(1){
+      if(selector.wait()){
+        if(selector.isReady(socket)){
+          socket.receive(*pack);
+          string a;
+          *pack >> a;
+          a = dechiffre(a);
+          cout << a << endl;
+        }
+      }
+    }
   }
+  listener->close();
 }
 
 void Serv::setPort(int port)
@@ -105,18 +120,6 @@ void Serv::launchCrypt()
   iv = new byte[sizeR];
   pr("Decryptage iv...");
   d.Decrypt( rng, (byte*)ivS, sizeof(ivS), (byte*)iv );
-
-  string ssa = "Hello world!";
-  char plainText[ssa.length()];
-  strcpy(plainText, ssa.c_str());
-  cout << plainText << endl;
-  CFB_Mode<AES>::Encryption Enc(key, AES::MAX_KEYLENGTH, iv);
-  Enc.ProcessData((byte*)plainText, (byte*)plainText, ssa.length());
-  cout << ssa << endl;
-  cout << plainText << endl;
-  CFB_Mode<AES>::Decryption Dec(key, AES::MAX_KEYLENGTH, iv);
-
-  listener->close();
 }
 
 string Serv::chiffre(string a){
@@ -124,6 +127,14 @@ string Serv::chiffre(string a){
   strcpy(p, a.c_str());
   CFB_Mode<AES>::Encryption Enc(key, AES::MAX_KEYLENGTH, iv);
   Enc.ProcessData((byte*)p, (byte*)p, a.length());
+  return string(p);
+}
+
+string Serv::dechiffre(string a){
+  char p[a.length()];
+  strcpy(p, a.c_str());
+  CFB_Mode<AES>::Decryption Dec(key, AES::MAX_KEYLENGTH, iv);
+  Dec.ProcessData((byte*)p, (byte*)p, a.length());
   return string(p);
 }
 
@@ -139,21 +150,6 @@ string Serv::hache(string ss)
   encoder.MessageEnd();
 
   return output;
-}
-
-byte Serv::stringToByte(string ss){
-  byte* a = new byte[ss.length()];
-  for(int i = 0; i < ss.length(); i++)
-    a[i] == ss[i];
-  return *a;
-}
-
-string Serv::byteToString(byte *ss, int size){
-  string a;
-  a.resize(size);
-  for(int i = 0; i < size; i++)
-    a[i] = ss[i];
-  return a;
 }
 
 void Serv::pr(string ss){

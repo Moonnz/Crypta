@@ -29,13 +29,13 @@ public:
   void launchCrypt();
   string hache(string ss);
 
-  byte stringToByte(string ss);
-  string byteToString(byte *ss, int size);
   void pr(string ss);
   void DecodePublicKey(const string&, RSA::PublicKey&);
   void Decode(const string&, BufferedTransformation&);
   void receiveKey();
   bool exist(const string&);
+  string chiffre(string);
+  string dechiffre(string);
 
   //int receive();
   //int send();
@@ -47,6 +47,7 @@ private:
   int portU;
   sf::Packet *pack;
   Socket::Status *status;
+  sf::SocketSelector *selector;
 
   //Partie cryptage
   RSA::PublicKey *publicKey;

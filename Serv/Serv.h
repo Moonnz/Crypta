@@ -28,13 +28,12 @@ public:
   void launchCrypt();
   string hache(string);
 
-  byte stringToByte(string);
-  string byteToString(byte*, int);
   void pr(string ss);
   void EncodePublicKey(const string&, const RSA::PublicKey&);
   void Encode(const string&, const BufferedTransformation&);
   void sendKey();
   string chiffre(string);
+  string dechiffre(string);
 
   //int receive();
   //int send();
@@ -43,6 +42,7 @@ private:
   //Partie serveur;
   sf::TcpSocket *socket;
   sf::TcpListener *listener;
+  sf::SocketSelector *selector;
   string message;
   int portU;
   sf::Packet *pack;
